@@ -4,7 +4,7 @@ import User from "../models/User.js";
 const clerkWebhooks = async (req,res)=> {
      try {
             // Creating a Svix instance
-            const whook = new Webhook(process.env.CLERK_WEBHOOk_SECRET)
+            const whook = new Webhook(process.env.CLERK_WEBHOOK_SECRETT)
             // Get headres
             const headres = {
                  "svix-id": req.headres["svix-id"],
@@ -37,7 +37,7 @@ const clerkWebhooks = async (req,res)=> {
                         username: data.first_name + " " + data.last_name,
                         image: data.image_url,
                     };
-                     await User.findByIdAndUpdate(userData)
+                     await User.findByIdAndUpdate(data.id, userData)
                     break;
                 }
 
@@ -51,6 +51,7 @@ const clerkWebhooks = async (req,res)=> {
              }
              res.json({success:true, message: "webhook Recieved"})
      } catch (error) {
+        console.log(error.message)
         console.log({success: false, message: error.message})
      }
 };
